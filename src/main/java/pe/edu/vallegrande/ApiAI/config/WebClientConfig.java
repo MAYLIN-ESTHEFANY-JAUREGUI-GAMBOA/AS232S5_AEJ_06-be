@@ -17,14 +17,14 @@ public class WebClientConfig {
     @Value("${rapidapi.youtube-mp36.apikey}")
     private String rapidapiApikey;
 
-    @Value("${rapidapi.instagram120.url}")
-    private String instagramUrl;
+    @Value("${imageprocessing.url}")
+    private String imageprocessingUrl;
 
-    @Value("${rapidapi.instagram120.host}")
-    private String instagramHost;
+    @Value("${imageprocessing.host}")
+    private String imageprocessingHost;
 
-    @Value("${rapidapi.instagram120.apikey}")
-    private String instagramApikey;
+    @Value("${imageprocessing.apikey}")
+    private String imageprocessingApiKey;
 
     @Bean(name = "youtubeWebClient")
     public WebClient youtubeWebClient() {
@@ -36,12 +36,12 @@ public class WebClientConfig {
                 .build();
     }
 
-    @Bean(name = "instagramWebClient")
-    public WebClient instagramWebClient() {
-        return WebClient.builder()
-                .baseUrl(instagramUrl)
-                .defaultHeader("x-rapidapi-host", instagramHost)
-                .defaultHeader("x-rapidapi-key", instagramApikey)
+    @Bean(name = "imageProcessingWebClient")
+    public WebClient imageProcessingWebClient(
+    return WebClient.builder()
+                .baseUrl(imageprocessingUrl)
+                .defaultHeader("x-rapidapi-host", imageprocessingHost)
+                .defaultHeader("x-rapidapi-key", imageprocessingApiKey)
                 .defaultHeader("Content-Type", "application/json")
                 .build();
     }
