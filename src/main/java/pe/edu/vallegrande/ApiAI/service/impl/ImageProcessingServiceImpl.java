@@ -42,7 +42,7 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
 
     private Mono<JsonNode> fetchFromApi(String text, String width, String height) {
         return imageProcessingWebClient.post()
-                .uri("/texttoimage3") // 👈 Aquí asegúrate de que sea el endpoint correcto
+                .uri("/v1/api/image") // 👈 Aquí asegúrate de que sea el endpoint correcto
                 .bodyValue(Map.of(
                         "text", text,
                         "width", width,
