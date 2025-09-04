@@ -11,96 +11,95 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.vallegrande.ApiAI.model.Instagram;
-import pe.edu.vallegrande.ApiAI.service.InstagramService;
+import pe.edu.vallegrande.ApiAI.model.ImageProcessing;
+import pe.edu.vallegrande.ApiAI.service.ImageProcessingService;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/v1/api/instagram")
+@RequestMapping("/v1/api/image")
 @CrossOrigin(origins = "*")
-@Tag(name = "Instagram API", description = "API para obtener información de perfiles de Instagram")
-public class InstagramRest {
+@Tag(name = "Image Processing API", description = "API para generar y obtener imágenes procesadas con texto y dimensiones")
+public class ImageProcessingRest {
 
-    private final InstagramService instagramService;
+    private final ImageProcessingService imageService;
 
     @Autowired
-    public InstagramRest(InstagramService instagramService) {
-        this.instagramService = instagramService;
+    public ImageProcessingRest(ImageProcessingService imageService) {
+        this.imageService = imageService;
     }
 
-    @PostMapping("/profile")
+    @PostMapping("/generate")
     @Operation(
-        summary = "Obtener perfil de Instagram",
-        description = "Obtiene la información completa de un perfil de Instagram por username"
+        summary = "Generar imagen",
+        description = "Genera una imagen a partir de un texto, ancho y alto"
     )
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Perfil obtenido exitosamente",
+            description = "Imagen generada exitosamente",
             content = @Content(
                 mediaType = "application/json",
-                schema = @Schema(implementation = Instagram.class)
+                schema = @Schema(implementation = ImageProcessing.class)
             )
         ),
         @ApiResponse(
             responseCode = "400",
-            description = "Username inválido o vacío"
+            description = "Datos inválidos o incompletos"
         ),
         @ApiResponse(
             responseCode = "500",
             description = "Error interno del servidor"
         )
     })
-    public Mono<ResponseEntity<Instagram>> getInstagramProfile(
-            @Parameter(description = "Objeto JSON con el username", required = true)
+    public Mono<ResponseEntity<ImageProcessing>> generateImage(
+            @Parameter(description = "Objeto JSON con text, width, height", required = true)
             @RequestBody Map<String, String> request) {
-        
-        String username = request.get("username");
-        
-        if (username == null || username.trim().isEmpty()) {
+
+        String text = request.get("text");
+        String width = request.get("width");
+        String height = request.get("height");
+
+        if (text == null || text.trim().isEmpty() || width == null || height == null) {
             return Mono.just(ResponseEntity.badRequest().build());
         }
 
-        return instagramService.getInstagramProfile(username.trim())
+        return imageService.generateImage(text.trim(), width.trim(), height.trim())
                 .map(ResponseEntity::ok)
                 .onErrorReturn(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
-    @GetMapping("/profile/{username}")
+    @GetMapping("/get/{id}")
     @Operation(
-        summary = "Obtener perfil de Instagram por URL",
-        description = "Obtiene la información completa de un perfil de Instagram usando el username en la URL"
+        summary = "Obtener imagen generada",
+        description = "Devuelve la información de una imagen generada por su ID"
     )
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Perfil obtenido exitosamente",
+            description = "Imagen obtenida exitosamente",
             content = @Content(
                 mediaType = "application/json",
-                schema = @Schema(implementation = Instagram.class)
+                schema = @Schema(implementation = ImageProcessing.class)
             )
         ),
         @ApiResponse(
-            responseCode = "400",
-            description = "Username inválido"
+            responseCode = "404",
+            description = "Imagen no encontrada"
         ),
         @ApiResponse(
             responseCode = "500",
             description = "Error interno del servidor"
         )
     })
-    public Mono<ResponseEntity<Instagram>> getInstagramProfileByPath(
-            @Parameter(description = "Username de Instagram", required = true, example = "instagram")
-            @PathVariable String username) {
-        
-        if (username.trim().isEmpty()) {
-            return Mono.just(ResponseEntity.badRequest().build());
-        }
+    public Mono<ResponseEntity<ImageProcessing>> getImageById(
+            @Parameter(description = "ID de la imagen generada", required = true, example = "1")
+            @PathVariable Long id) {
 
-        return instagramService.getInstagramProfile(username.trim())
+        return imageService.getImageById(id)
                 .map(ResponseEntity::ok)
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
                 .onErrorReturn(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 }

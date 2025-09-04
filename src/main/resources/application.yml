@@ -6,9 +6,9 @@ spring:
   application:
     name: API-AI
   r2dbc:
-    url: r2dbc:postgresql://neondb_owner:npg_VLw14dKbnlIx@ep-withered-bird-aca8elbd-pooler.sa-east-1.aws.neon.tech/apiai?sslmode=require&channel_binding=require
-    username: neondb_owner
-    password: npg_VLw14dKbnlIx
+    url: r2dbc:postgresql://NeonDB_owner:npg_z3LUOmRcrI5G@ep-odd-grass-a5zs4hqj-pooler.us-east-2.aws.neon.tech/NeonDB?sslmode=require&channel_binding=require
+    username: NeonDB_owner
+    password: npg_z3LUOmRcrI5G
 
 rapidapi:
   youtube-mp36:
@@ -16,10 +16,11 @@ rapidapi:
     host: youtube-mp36.p.rapidapi.com
     apikey: 11d5a59a70msh928a6b51895e702p12ab87jsn7b4f24c628ba
 
-  instagram120:
-    url: https://instagram120.p.rapidapi.com
-    host: instagram120.p.rapidapi.com
-    apikey: 11d5a59a70msh928a6b51895e702p12ab87jsn7b4f24c628ba
+imageprocessing:
+  url: https://chatgpt-42.p.rapidapi.com/texttoimage3
+  host: chatgpt-42.p.rapidapi.com
+  apikey: f6f24ecde9mshd0292b17a6abc5fp11345fjsn6783b732b8cf
+
 
 
 
