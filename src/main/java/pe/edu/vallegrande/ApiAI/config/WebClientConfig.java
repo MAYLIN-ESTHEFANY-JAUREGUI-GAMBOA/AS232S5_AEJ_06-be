@@ -37,7 +37,7 @@ public class WebClientConfig {
     }
 
     @Bean(name = "imageProcessingWebClient")
-    public WebClient imageProcessingWebClient(
+    public WebClient imageProcessingWebClient() {
     return WebClient.builder()
                 .baseUrl(imageprocessingUrl)
                 .defaultHeader("x-rapidapi-host", imageprocessingHost)
