@@ -8,5 +8,6 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface ImageProcessingRepository extends ReactiveCrudRepository<ImageProcessing, Long> {
     
-    Mono<ImageProcessing> findByUsername(String username);
+   Mono<ImageProcessing> findById(Long id);
+
 }
