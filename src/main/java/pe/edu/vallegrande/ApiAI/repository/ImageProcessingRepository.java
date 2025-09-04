@@ -2,11 +2,11 @@ package pe.edu.vallegrande.ApiAI.repository;
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
-import pe.edu.vallegrande.ApiAI.model.Instagram;
+import pe.edu.vallegrande.ApiAI.model.ImageProcessing;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface InstagramRepository extends ReactiveCrudRepository<Instagram, Long> {
+public interface ImageProcessingRepository extends ReactiveCrudRepository<ImageProcessing, Long> {
     
-    Mono<Instagram> findByUsername(String username);
+    Mono<ImageProcessing> findByUsername(String username);
 }
